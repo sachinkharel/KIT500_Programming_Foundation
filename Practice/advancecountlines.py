@@ -6,7 +6,11 @@ __author__ = "Sachin Kharel"
 
 def main():
     getfilename = input("Enter the file name: ")
-    fhand = open("Practice/"+ getfilename)
+    try:
+        fhand = open("Practice/"+ getfilename)
+    except:
+        print("File cannot be opened or File not found: ", getfilename)
+        quit()
     count = 0
     for line in fhand:
         count =count + 1
