@@ -9,7 +9,8 @@ def main():
     wordlist = list()
     tempword = str()
     for word in namesfile:
-        tempword = tempword + (word.strip())
+        tempword = tempword + (word.rstrip())
+    # print(tempword)
     wordlist = tempword.split()
     namedict = dict()
     maxvalue = 0
