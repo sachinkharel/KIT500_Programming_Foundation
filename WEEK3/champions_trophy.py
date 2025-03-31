@@ -9,23 +9,23 @@ __author__ = "Sachin Kharel"
 
 def main():
 
-    team_1: str = input("Enter the name of the first semi-finalist team: ")
-    city_1: str = input(f"Enter the name of a major city from {team_1}: ")
-    points_1: int = int(input(f"How many points did {team_1} earn in the group stage? "))
-    team_2: str = input("Enter the name of the second semi-finalist team: ")
-    city_2: str = input(f"Enter the name of a major city from {team_2}: ")
-    points_2: int = int(input(f"How many points did {team_2} earn in the group stage? "))
-    team_3: str = input("Enter the name of the third semi-finalist team: ")
-    city_3: str = input(f"Enter the name of a major city from {team_3}: ")
-    points_3: int = int(input(f"How many points did {team_3} earn in the group stage? "))
-    team_4: str = input("Enter the name of the fourth semi-finalist team: ")
-    city_4: str = input(f"Enter the name of a major city from {team_4}: ")
-    points_4: int = int(input(f"How many points did {team_4} earn in the group stage? "))
+    team_1: str = input("Enter the name of the first semi-finalist team: ") #take input from user for team 1
+    city_1: str = input(f"Enter the name of a major city from {team_1}: ") #take input from user for city 1
+    points_1: int = int(input(f"How many points did {team_1} earn in the group stage? ")) #take input from user for points 1
+    team_2: str = input("Enter the name of the second semi-finalist team: ") #take input from user for team 2
+    city_2: str = input(f"Enter the name of a major city from {team_2}: ") #take input from user for city 2
+    points_2: int = int(input(f"How many points did {team_2} earn in the group stage? ")) #take input from user for points 2
+    team_3: str = input("Enter the name of the third semi-finalist team: ") #take input from user for team 3
+    city_3: str = input(f"Enter the name of a major city from {team_3}: ") #take input from user for city 3
+    points_3: int = int(input(f"How many points did {team_3} earn in the group stage? ")) #take input from user for points 3
+    team_4: str = input("Enter the name of the fourth semi-finalist team: ") #take input from user for team 4
+    city_4: str = input(f"Enter the name of a major city from {team_4}: ") #take input from user for city 4
+    points_4: int = int(input(f"How many points did {team_4} earn in the group stage? ")) #take input from user for points 4
     
+    #print the formatted summary of the top four semi-finalists
     print()
     print("Champions Trophy 2025 - Semi-Finalists")
     print()
-
 
     print("The semi-finalists have been decided!")
     print()
