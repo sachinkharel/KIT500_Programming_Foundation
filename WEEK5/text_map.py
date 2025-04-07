@@ -5,7 +5,7 @@ A command-driven program for working with grid-based maps rendered as text.
 
 import numpy as np
 
-__author__ = "YOUR NAME"
+__author__ = "Sachin Kharel"
 
 
 def create_map(string: str) -> np.ndarray:
@@ -57,7 +57,9 @@ def display_map(map: np.ndarray):
     for row in map: 
         for element in row:
             print(f"{element} ", end="")
+        print() # New line after each row
     print() # Trailing blank line
+  
 
 
 
@@ -65,7 +67,7 @@ def is_inside(map: np.ndarray, row: int, col: int) -> bool:
     """
     Returns True if (row, col) is inside the map's bounds; False otherwise.
     """
-    if  0 <= row < map.shape[0] and 0 <= col < map.shape[1]:
+    if  0 <= row < map.shape[0] and 0 <= col < map.shape[1]: # Check if row and col are within the bounds of the map
         return True
     return False
 
@@ -100,7 +102,18 @@ def flood_fill(map: np.ndarray, row: int, col: int, replace: str, with_colour: s
     Performs flood fill, replacing replace with with_colour,
     starting from (row, col) and returns the number of cells changed.
     """
-    # TODO: Implement this
+    changed:int = 0 # Number of cells changed, initially 0
+    if is_inside(map, row, col) and map[row, col] == replace:
+        map[row, col] = with_colour # Replace the cell
+        changed += 1 # Increment the count of changed cells
+        
+        # Recursively call flood_fill for the 4 adjacent cells
+        changed += flood_fill(map, row - 1, col, replace, with_colour)
+        changed += flood_fill(map, row + 1, col, replace, with_colour)
+        changed += flood_fill(map, row, col - 1, replace, with_colour)
+        changed += flood_fill(map, row, col + 1, replace, with_colour)
+        return changed
+    
     return 0
 
 
@@ -137,8 +150,9 @@ def main():
                 display_map(map)
             case ["z", row, col]: # Zoom
                 zoom(map, int(row), int(col))
-            case ["r"]: # Replace
-                print("Feature not implemented")
+            case ["r", row, col, colour]: # Replace
+                print(f"{replace(map, int(row), int(col), str(colour))} grid squares changed")
+                
             case ["l"]: # Load
                 print("Feature not implemented")
             case ["s"]: # Save
