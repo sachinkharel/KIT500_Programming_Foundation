@@ -53,15 +53,20 @@ def display_map(map: np.ndarray):
     """
     Displays the given character-based map with a leading and trailing blank line.
     """
-    # TODO: Implement this (replace the elipses ... below)
-    ...
+    print("\n") # Leading blank line
+    for row in map: 
+        for element in row:
+            print(f"{element} ", end="")
+    print() # Trailing blank line
+
 
 
 def is_inside(map: np.ndarray, row: int, col: int) -> bool:
     """
     Returns True if (row, col) is inside the map's bounds; False otherwise.
     """
-    # TODO: Implement this
+    if  0 <= row < map.shape[0] and 0 <= col < map.shape[1]:
+        return True
     return False
 
 
@@ -70,9 +75,14 @@ def zoom(map: np.ndarray, row: int, col: int):
     Displays the 9 grid squares in the map centred at (row, col).
     Displays a space for any grid square that are outside the map's bounds.
     """
-    # TODO: Implement this (replace the elipses ... below)
-    ...
-
+    for r in range(row - 1, row + 2):  # Loop through rows: row-1 to row+1
+            for c in range(col - 1, col + 2):  # Loop through columns: col-1 to col+1
+                if is_inside(map, r, c):  # Check if the cell is inside the map bounds
+                    print(map[r, c], end="")  # Print the map character at this position
+                else:
+                    print(" ", end="")  # Print a space if the cell is out of bounds
+            print()  # Move to the next line after printing the entire row
+    
 
 def replace(map: np.ndarray, row: int, col: int, with_colour: str) -> int:
     """
@@ -102,13 +112,13 @@ def main():
     colour: str # Command param for colour
 
     # The initial map source.
-    # Edit this to create some holes (or change its size)
+    # Edited the initial map to contain spaces to create a lot of hollow spaces.
     # Be sure to keep the new line chars (\n) at the end of all but the last line
     str_map = ("####################\n"
                "######            ##\n"
                "######  ############\n"
                "######  ############\n"
-               "######           ###\n"
+               "######            ##\n"
                "################  ##\n"
                "################  ##\n"
                "######            ##\n"
@@ -124,9 +134,9 @@ def main():
         match command:
             # TODO: Make required changes in the appropiate cases
             case ["d"]: # Display
-                print("Feature not implemented")
-            case ["z"]: # Zoom
-                print("Feature not implemented")
+                display_map(map)
+            case ["z", row, col]: # Zoom
+                zoom(map, int(row), int(col))
             case ["r"]: # Replace
                 print("Feature not implemented")
             case ["l"]: # Load
