@@ -41,7 +41,7 @@ class Task:
         else:
             return f"{self.description} ({self.category.value}) - {self.days_until_due} days until due - {self.percent}% complete"
 
-def input_enum_name() -> Category:
+def category_name() -> Category:
     #Show a menu of human-readable versions of the enum's values
     #Have the user select one of them and return it
     i:int = 1
@@ -62,15 +62,15 @@ def input_enum_name() -> Category:
         choice = Category.UNI
     return choice
 
-def input_data_class_name() -> Task:
+def create_task() -> Task:
     #Read and validate user input for values to store in the data class
-    #Calls the input_enum_name function to get that value
+    #Calls the category_name function to get that value
     #Creates and returns the newly created object
     
     task_d = input("Enter the task description: ")                              #Read the task description
     percent_d = float(input("Enter the percentage of the task completed: "))    #Read the percentage of the task completed
     days_d = int(input("Enter the number of days until the task is due: "))     #Read the number of days until the task is due
-    category_d = input_enum_name()                                              #Read the category of the task                
+    category_d = category_name()                                              #Read the category of the task                
     
     return Task(task_d, percent_d, days_d, category_d)                          #Return the newly created object
     
@@ -82,7 +82,7 @@ def main():
     data: Task
     print("Enter task details")
     print()
-    data = input_data_class_name() #Read the task details from the user
+    data = create_task() #Read the task details from the user
 
     #Displays the result calling print()
     print(data)
