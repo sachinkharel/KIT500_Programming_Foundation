@@ -4,12 +4,13 @@ Exception Play (10.1 Exception Handling)
 A collection of code samples that will involve exception handling.
 """
 
-__author__ = "Lawrence Sambrooks, James Montgomery, ADD YOUR NAME HERE"
+__author__ = "Lawrence Sambrooks, James Montgomery, Sachin Kharel"
 
 
 from enum import Enum
 from io import IOBase
 from os import path
+from urllib.error import URLError
 from urllib.request import urlopen
 
 class MenuOption(Enum):
@@ -37,7 +38,11 @@ def read_an_int(query: str) -> int:
     """Part of the number input and list access examples."""
     value: int = None # value obtained from the user
     while value is None:
-        value = int(input(f"{query}: "))
+        # added a try/except block to catch ValueError
+        try:
+            value = int(input(f"{query}: "))
+        except ValueError:
+            print("Cannot interpret input as a number")
     return value
 
 
@@ -63,8 +68,11 @@ def list_access():
 
     print("\nList Access Example")
     while do_more:
-        index = read_an_int("Enter an index to view: ")
-        print(f"Value at position {index} is {data[index]}")
+        try:
+            index = read_an_int("Enter an index to view: ")
+            print(f"Value at position {index} is {data[index]}")
+        except IndexError:
+            print(f"Index {index} is out of range")
         do_more = confirm("Inspect another")
 
 
@@ -82,13 +90,27 @@ def read_display_close(readable: IOBase, description: str):
 
 def read_file():
     """Runs the file reading example."""
-    raise NotImplementedError("This operation not yet implemented")
+    filename: str
+
+    filename = input("Enter a file name in the current directory: ")
+    try:
+        read_display_close(open(f"{path.dirname(__file__)}/{filename}", "r"), f"Contents of {filename}:")
+    except FileNotFoundError:
+        print(f"File {filename} not found")
+    except UnicodeDecodeError:
+        print(f"File {filename} is not a text file")
 
 
 def read_webpage():
     """Runs the web page reading example."""
-    raise NotImplementedError("This operation not yet implemented")
-
+    url: str #URL as given by the user
+    url = input("Enter the URL of a webpage: ")
+    try:
+        read_display_close(urlopen(url), f"Contents of {url}:")
+    except ValueError as e:
+       print(f"{e}")
+    except URLError as e:
+        print(f"{e}")
 
 def main():
     choice: int # user's typed menu choice
