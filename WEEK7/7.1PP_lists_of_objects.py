@@ -7,7 +7,6 @@ __author__ = "Sachin Kharel"
 
 from dataclasses import dataclass
 from enum import Enum
-from os import close
 
 
 #Define the enum 
