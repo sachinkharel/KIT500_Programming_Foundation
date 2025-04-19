@@ -23,5 +23,6 @@ class SectionType(Enum):
     """
     EDUCATION: "Education"
     EXPERIENCE: "Experience"
-    SKILLS: "Skills"
+    SKILLS_AND_INTERESTS: "Skills & Interests"
+    LEADERSHIP_AND_ACTIVITIES: "Leadership & Activities"
     PROJECTS: "Projects"
