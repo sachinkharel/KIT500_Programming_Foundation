@@ -1,4 +1,6 @@
+from re import S
 from docx import Document
+from models.enums import SectionType
 
 
 
@@ -21,14 +23,10 @@ class ResumeParser:
         
         self.doc = Document(file_path) #open the docx file using the docx library
         
-        # Initialise empty directionaries to store parsed sections
-        self.sections = {
-            "Education": [],
-            "Experience": [],
-            'Skills & Interests': [],
-            'Leadership & Activities': [],
-            'Projects': []
-        }
+        # Initialize a dictionary where each SectionType enum member maps to an empty list for storing resume content
+
+        self.sections = {section: [] for section in SectionType}
+        
     
     def parse(self):
         """
@@ -47,20 +45,21 @@ class ResumeParser:
             text = section.text.strip()
             
             #check if the paragraph text corresponds to a section header
-            if text == "Education":
-                current_section = "Education"
-            elif text == "Experience":
-                current_section = "Experience"
-            elif text == "Skills & Interests":
-                current_section = "Skills & Interests"
-            elif text == "Leadership & Activities":
-                current_section = "Leadership & Activities"
-            elif text == "Projects":
-                current_section = "Projects"
+            if text == SectionType.EDUCATION.value:
+                current_section = SectionType.EDUCATION
+            elif text == SectionType.EXPERIENCE.value:
+                current_section = SectionType.EXPERIENCE
+            elif text == SectionType.SKILLS_AND_INTERESTS.value:
+                current_section = SectionType.SKILLS_AND_INTERESTS
+            elif text == SectionType.LEADERSHIP_AND_ACTIVITIES.value:
+                current_section = SectionType.LEADERSHIP_AND_ACTIVITIES
+            elif text == SectionType.PROJECTS.value:
+                current_section = SectionType.PROJECTS
             
-            # If we are in a section, add the text to the corresponding list
+            # If we are in a section and the text is not empty, append it to the current section
             elif current_section and text:
-                # Append the text to the current section's list
+                
+                # Add the text to the current section
                 self.sections[current_section].append(text)
         
         #After parsing, we can print the sections to verify the content
@@ -79,20 +78,3 @@ class ResumeParser:
                 print(f" - {item}")
             print()
 
-def main():
-    """
-    Main function to initialize the parser and start the parsing process.
-    It assumes the resume file path is provided.
-    """
-    
-    # Specify the path to the resume file
-    resume_file = "/Users/sachinutas/Downloads/Sachin Kharel Resume.docx"
-    # Initialize the ResumeParser with the provided resume file
-    parser = ResumeParser(resume_file)
-    
-    # Parse the content of the resume
-    parser.parse()
-    
-if __name__ == "__main__":
-    # Run the main function when the script is executed
-    main()

@@ -21,8 +21,8 @@ class SectionType(Enum):
         SKILLS: Represents the "Skills" section of my resume.
         PROJECTS: Represents the "Projects" section of my resume.
     """
-    EDUCATION: "Education"
-    EXPERIENCE: "Experience"
-    SKILLS_AND_INTERESTS: "Skills & Interests"
-    LEADERSHIP_AND_ACTIVITIES: "Leadership & Activities"
-    PROJECTS: "Projects"
+    EDUCATION = "Education"
+    EXPERIENCE = "Experience"
+    SKILLS_AND_INTERESTS = "Skills & Interests"
+    LEADERSHIP_AND_ACTIVITIES = "Leadership & Activities"
+    PROJECTS = "Projects"
