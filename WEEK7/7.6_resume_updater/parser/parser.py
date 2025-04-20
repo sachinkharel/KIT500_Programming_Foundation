@@ -1,6 +1,6 @@
-from re import S
 from docx import Document
 from models.enums import SectionType
+from models.section_data import ResumeSection
 
 
 
@@ -59,8 +59,11 @@ class ResumeParser:
             # If we are in a section and the text is not empty, append it to the current section
             elif current_section and text:
                 
-                # Add the text to the current section
-                self.sections[current_section].append(text)
+                # Create a new ResumeSection object for the current text
+                resume_section = ResumeSection(section_type=current_section, content=text)
+                
+                # Append the ResumeSection object to the corresponding section list
+                self.sections[current_section].append(resume_section)
         
         #After parsing, we can print the sections to verify the content
         self.print_sections()
