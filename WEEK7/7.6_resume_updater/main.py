@@ -23,7 +23,11 @@ def main():
     parser = ResumeParser(resume_file)
     
     # Parse the content of the resume
-    parser.parse()
+    parsed_sections = parser.parse()
+    
+    # Print to see the parsed output
+    for section in parsed_sections:
+        print(f"{section.section_type.value}: {section.content}")
     
 if __name__ == "__main__":
     # Run the main function when the script is executed
