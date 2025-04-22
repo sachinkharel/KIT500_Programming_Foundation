@@ -14,7 +14,7 @@ class ResumeSection:
     
 @dataclass
 class ResumeUpdateRequest:
-    """"
+    """
     Represents a request to update a resume.
     Attributes:
         sections (list[ResumeSection]): A list of sections to be updated in the resume.

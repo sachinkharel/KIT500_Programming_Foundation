@@ -28,7 +28,7 @@ class ResumeParser:
         self.sections = {section: [] for section in SectionType}
         
     
-    def parse(self):
+    def parse(self) -> list[ResumeSection]:
         """
         Parse the resume sections from the provided .docx file.
 
@@ -65,19 +65,27 @@ class ResumeParser:
                 # Append the ResumeSection object to the corresponding section list
                 self.sections[current_section].append(resume_section)
         
-        #After parsing, we can print the sections to verify the content
-        self.print_sections()
-    
-    def print_sections(self):
-        """
-        Print the parsed sections of the resume to the console.
         
-        This method iterates through the parsed sections and prints each section's title
-        followed by its content.
-        """
-        for section, content in self.sections.items():
-            print(f"{section}:")
-            for item in content:
-                print(f" - {item}")
-            print()
+        # #After parsing, we can print the sections to verify the content
+        # self.print_sections()
+        
+        # Return the parsed sections as a list of ResumeSection objects
+        parsed_sections = []
+        for section_items in self.sections.values():
+            parsed_sections.extend(section_items)
+   
+        return parsed_sections
+    
+    # def print_sections(self):
+    #     """
+    #     Print the parsed sections of the resume to the console.
+        
+    #     This method iterates through the parsed sections and prints each section's title
+    #     followed by its content.
+    #     """
+    #     for section, content in self.sections.items():
+    #         print(f"{section}:")
+    #         for item in content:
+    #             print(f" - {item}")
+    #         print()
 
