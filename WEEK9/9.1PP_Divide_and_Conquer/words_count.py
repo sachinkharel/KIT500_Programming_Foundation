@@ -104,7 +104,7 @@ def full_report(sentences: list[str], words_list: list[str]):
     
     print("Sentences:", sentences_count(sentences))
     print("Word count:", words_count(words_list))
-    print("Average word length:", f"{average_word_length(words_list):1f}")
+    print("Average word length:", f"{average_word_length(words_list):.1f}")
     
 
 def display_menu( sentences: list[str], words_list: list[str]):
