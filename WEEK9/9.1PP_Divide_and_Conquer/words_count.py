@@ -6,8 +6,6 @@ count sentences and words, calculate average word length, and display results.
 
 __author__ = "Sachin Kharel"
 
-from calendar import c
-
 
 def user_input() -> str:
     """
