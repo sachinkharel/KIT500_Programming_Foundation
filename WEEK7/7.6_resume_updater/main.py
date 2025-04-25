@@ -10,7 +10,7 @@ def main():
     
     # Prompt the user for the path to the resume file
     
-    resume_file = input("Enter the path to your resume file (e.g., resume.docx): ")
+    resume_file = "/Users/sachinutas/Downloads/Sachin Kharel Resume.docx"
     
     # Check until user provides a valid file path
     
@@ -24,11 +24,13 @@ def main():
     
     # Parse the content of the resume
     parsed_sections = parser.parse()
+    print(parsed_sections)
     
     # Print to see the parsed output
-    for section in parsed_sections:
-        print(f"{section.section_type.value}: {section.content}")
+    # for section in parsed_sections:
+    #     print(f"{section.section_type.value}: {section.content}")
     
 if __name__ == "__main__":
     # Run the main function when the script is executed
     main()
+    
