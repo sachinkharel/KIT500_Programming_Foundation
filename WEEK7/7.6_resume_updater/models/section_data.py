@@ -10,7 +10,7 @@ class ResumeSection:
         content (str): The content of the resume section.
     """
     section_type: SectionType
-    content: str
+    content: str | dict
     
 @dataclass
 class ResumeUpdateRequest:
