@@ -67,40 +67,54 @@ class ResumeParser:
                 # print(f"Current section: {current_section}")  # Debugging output
                 if current_section == SectionType.EDUCATION:
                     # Process education data
-                    data = self.parse_education_data(text)
+                    data = self.parse_education_data(section)
                     # print(f"Parsed education data: {data}")  # Debugging output
                     if data:
                         current_data["Education"].append(data)
                 elif current_section == SectionType.EXPERIENCE:
                     # Process experience data
-                    data = self.parse_experience_data(text)
+                    data = self.parse_experience_data(section)
                     if data:
                         current_data["Experience"].append(data)
                 elif current_section == SectionType.SKILLS_AND_INTERESTS:
                     # Process skills data
-                    data = self.parse_skills_data(text)
+                    data = self.parse_skills_data(section)
                     if data:
                         current_data["Skills & Interests"].update(data)
                 elif current_section == SectionType.LEADERSHIP_AND_ACTIVITIES:
                     # Process leadership data
-                    data = self.parse_leadership_data(text)
+                    data = self.parse_leadership_data(section)
                     if data:
                         current_data["Leadership & Activities"].append(data)
                 elif current_section == SectionType.PROJECTS:
                     # Process project data
-                    data = self.parse_projects_data(text)
+                    data = self.parse_projects_data(section)
                     if data:
                         current_data["Projects"].append(data)
         
         return current_data
     
-    def parse_education_data(self, text):
+    def extract_hyperlink(self, paragraph):
+        """
+        Extracts the first hyperlink (if any) from the given paragraph using XML relationships.
+        """
+        
+        for rel in paragraph.part.rels.values():
+            if rel.reltype == 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink':
+                if rel.rId in paragraph._p.xml:
+                    print(f"Found hyperlink: {rel.target_ref}")  # Debugging output
+                    return rel.target_ref  # Corrected from .target to .target_ref
+        return ""
+
+
+    
+    def parse_education_data(self, paragraph):
         """
         Parses education-related information from the provided text.
         This can be customized as per the document layout.
         """
         # Clean up the text to handle tabs or multiple spaces
-        text = text.replace("\t", " | ")  # Replace any tabs with a pipe to standardize
+        text = paragraph.text.replace("\t", " | ")  # Replace any tabs with a pipe to standardize
         
         # print(f"Parsing education data: {text}")  # Debugging output
         
@@ -108,6 +122,9 @@ class ResumeParser:
         parts = [part.strip() for part in text.split(" | ") if part.strip()]    # Clean up empty parts so that we can get the right length and index
         
         # print(f"Split parts: {parts}")  # Debugging output
+        
+        link = self.extract_hyperlink(paragraph)
+        
         
         if len(parts) >= 4:  # We expect at least 4 parts: institution, degree, location, duration
             # Return the parsed data in a dictionary format
@@ -117,36 +134,51 @@ class ResumeParser:
                 "location": parts[2],     # Location
                 "duration": parts[3],     # Duration
                 "gpa": parts[4] if len(parts) > 4 else "",  # Optional GPA
-                "link": ""  # You can handle links separately if required
+                "link": link  # You can handle links separately if required
             }
         return None
 
     
-    def parse_experience_data(self, text):
+    def parse_experience_data(self, paragraph):
         """
         Parses experience-related information from the provided text.
         This can be customized as per the document layout.
         """
-        # Format: Company | Role | Location | Duration
-        parts = [part.strip() for part in text.split(" | ") if part.strip()]    # Clean up empty parts so that we can get the right length and index
 
+        # Format: Company | Role | Location | Duration
+        text = paragraph.text.replace("\t", " | ")  # Replace any tabs with a pipe to standardize
+        
+        parts = [part.strip() for part in text.split(" | ") if part.strip()]    # Clean up empty parts so that we can get the right length and index
+        # print(f"Parsing experience data: {text}")  # Debugging output
+        # print(f"Split parts: {parts}")  # Debugging output
+
+        link = self.extract_hyperlink(paragraph)
+
+        
         if len(parts) >= 4:
-            return {
-                "title": parts[1].strip(),
-                "company": parts[0].strip(),
+            self.current_experience_entry = {
+                "title": parts[0].strip(),
+                "company": parts[1].strip(),
                 "location": parts[2].strip(),
                 "duration": parts[3].strip(),
                 "description": [],  # We'll append descriptions
-                "link": ""  # Handle link extraction if any
+                "link": link  # Handle link extraction if any
             }
+            return self.current_experience_entry
+        
+        # If it's a description line and a current entry exists, append the description
+        if len(parts) == 1 and hasattr(self, 'current_experience_entry'):
+            self.current_experience_entry["description"].append(parts[0].strip())
+            return None    
+        
         return None
 
-    def parse_skills_data(self, text):
+    def parse_skills_data(self, paragraph):
         """
         Parses skills & interests-related information from the provided text.
         """
         # Assuming skills are listed by category: technical, languages, and interests
-        categories = text.split(" || ")
+        categories = paragraph.text.split(" || ")
         data = {}
         if "Technical:" in categories[0]:
             data["technical"] = categories[0][10:].split(",")  # Remove "Technical:" and split skills
@@ -156,16 +188,18 @@ class ResumeParser:
             data["interests"] = categories[2][10:].split(",")  # And for interests
         return data
 
-    def parse_leadership_data(self, text):
+    def parse_leadership_data(self, paragraph):
         """
         Parses leadership and activities-related information from the provided text.
         """
-        text = text.replace("\t", " | ")  # Replace any tabs with a pipe to standardize
+        text = paragraph.text.replace("\t", " | ")  # Replace any tabs with a pipe to standardize
         # print(f"Parsing leadership data: {text}")
         
         parts = [part.strip() for part in text.split(" | ") if part.strip()]    # Clean up empty parts so that we can get the right length and index
 
-        # print(f"Split parts: {parts}")
+        
+        link = self.extract_hyperlink(paragraph)
+        
         
         # Check if the text contains a title and other structured data
         if len(parts) >= 4:
@@ -176,7 +210,7 @@ class ResumeParser:
                 "location": parts[2].strip(),
                 "duration": parts[3].strip(),
                 "description": [],  # Initialize an empty list for descriptions
-                "link": ""  # Handle link extraction if any
+                "link": link  # Handle link extraction if any
             }
             return self.current_leadership_entry
         
@@ -187,22 +221,25 @@ class ResumeParser:
         
         return None
 
-    def parse_projects_data(self, text):
+    def parse_projects_data(self, paragraph):
         """
         Parses project-related information from the provided text.
         """
-        text = text.replace("\t", " | ")  # Replace any tabs with a pipe to standardize
-        print(f"Parsing project data: {text}")
+        text = paragraph.text.replace("\t", " | ")  # Replace any tabs with a pipe to standardize
+        # print(f"Parsing project data: {text}")
         # Format: Title | Duration
         parts = [part.strip() for part in text.split(" | ") if part.strip()]    # Clean up empty parts so that we can get the right length and index
-        print(f"Split parts: {parts}")
+        
+        link = self.extract_hyperlink(paragraph)
+        
+        # print(f"Split parts: {parts}")
         if len(parts) >= 2:
             # Initialize a new project entry
             self.current_project_entry = {
                 "title": parts[0].strip(),
                 "duration": parts[1].strip(),
                 "description": [],  # Add project descriptions
-                "link": ""  # Handle link if available
+                "link": link  # Handle link if available
             }
             return self.current_project_entry
         # If it's a description line and a current entry exists, append the description
