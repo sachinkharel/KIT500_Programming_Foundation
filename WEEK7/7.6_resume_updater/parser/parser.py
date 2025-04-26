@@ -1,3 +1,4 @@
+import re
 from docx import Document
 from models.enums import SectionType
 from models.section_data import ResumeSection
@@ -40,7 +41,7 @@ class ResumeParser:
         for section in self.doc.paragraphs:
             # Clean up the text by stripping unnecessary spaces or special characters
             text = section.text.strip()
-            print(f"Processing paragraph: {text}")  # Debugging output
+            # print(f"Processing paragraph: {text}")  # Debugging output
             
             # Check if the paragraph text corresponds to a section header
             if text == SectionType.EDUCATION.value:
@@ -63,11 +64,11 @@ class ResumeParser:
             
             # If we are in a section and the text is not empty, process the data
             elif current_section and text:
-                print(f"Current section: {current_section}")  # Debugging output
+                # print(f"Current section: {current_section}")  # Debugging output
                 if current_section == SectionType.EDUCATION:
                     # Process education data
                     data = self.parse_education_data(text)
-                    print(f"Parsed education data: {data}")  # Debugging output
+                    # print(f"Parsed education data: {data}")  # Debugging output
                     if data:
                         current_data["Education"].append(data)
                 elif current_section == SectionType.EXPERIENCE:
@@ -101,12 +102,12 @@ class ResumeParser:
         # Clean up the text to handle tabs or multiple spaces
         text = text.replace("\t", " | ")  # Replace any tabs with a pipe to standardize
         
-        print(f"Parsing education data: {text}")  # Debugging output
+        # print(f"Parsing education data: {text}")  # Debugging output
         
         # Split the text into parts by '|'
-        parts = [part.strip() for part in text.split("|")]
+        parts = [part.strip() for part in text.split(" | ") if part.strip()]    # Clean up empty parts so that we can get the right length and index
         
-        print(f"Split parts: {parts}")  # Debugging output
+        # print(f"Split parts: {parts}")  # Debugging output
         
         if len(parts) >= 4:  # We expect at least 4 parts: institution, degree, location, duration
             # Return the parsed data in a dictionary format
@@ -127,7 +128,8 @@ class ResumeParser:
         This can be customized as per the document layout.
         """
         # Format: Company | Role | Location | Duration
-        parts = text.split(" | ")
+        parts = [part.strip() for part in text.split(" | ") if part.strip()]    # Clean up empty parts so that we can get the right length and index
+
         if len(parts) >= 4:
             return {
                 "title": parts[1].strip(),
@@ -159,32 +161,53 @@ class ResumeParser:
         Parses leadership and activities-related information from the provided text.
         """
         text = text.replace("\t", " | ")  # Replace any tabs with a pipe to standardize
-        print(f"Parsing leadership data: {text}")
+        # print(f"Parsing leadership data: {text}")
         
-        parts = text.split(" | ")
-        print(f"Split parts: {parts}")
+        parts = [part.strip() for part in text.split(" | ") if part.strip()]    # Clean up empty parts so that we can get the right length and index
+
+        # print(f"Split parts: {parts}")
+        
+        # Check if the text contains a title and other structured data
         if len(parts) >= 4:
-            return {
-                "title": parts[1].strip(),
-                "organization": parts[0].strip(),
+            # Create a new entry for the title and other details
+            self.current_leadership_entry = {
+                "title": parts[0].strip(),
+                "organization": parts[1].strip(),
                 "location": parts[2].strip(),
                 "duration": parts[3].strip(),
-                "description": [],  # We'll append descriptions
+                "description": [],  # Initialize an empty list for descriptions
                 "link": ""  # Handle link extraction if any
             }
+            return self.current_leadership_entry
+        
+        # If it's a description line and a current entry exists, append the description
+        if len(parts) == 1 and hasattr(self, 'current_leadership_entry'):
+            self.current_leadership_entry["description"].append(parts[0].strip())
+            return None
+        
         return None
 
     def parse_projects_data(self, text):
         """
         Parses project-related information from the provided text.
         """
+        text = text.replace("\t", " | ")  # Replace any tabs with a pipe to standardize
+        print(f"Parsing project data: {text}")
         # Format: Title | Duration
-        parts = text.split(" | ")
+        parts = [part.strip() for part in text.split(" | ") if part.strip()]    # Clean up empty parts so that we can get the right length and index
+        print(f"Split parts: {parts}")
         if len(parts) >= 2:
-            return {
+            # Initialize a new project entry
+            self.current_project_entry = {
                 "title": parts[0].strip(),
                 "duration": parts[1].strip(),
                 "description": [],  # Add project descriptions
                 "link": ""  # Handle link if available
             }
+            return self.current_project_entry
+        # If it's a description line and a current entry exists, append the description
+        if len(parts) == 1 and hasattr(self, 'current_project_entry'):
+            self.current_project_entry["description"].append(parts[0].strip())
+            return None
+        
         return None
