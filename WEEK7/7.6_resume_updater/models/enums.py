@@ -6,10 +6,8 @@ class FileType(Enum):
 
     Attributes:
         DOCX (str): Represents a Microsoft Word document file with the ".docx" extension.
-        HTML (str): Represents an HTML file with the ".html" extension.
     """
     DOCX = "docx"   
-    HTML = "html"
     
 class SectionType(Enum):
     """

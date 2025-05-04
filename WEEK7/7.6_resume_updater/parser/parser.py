@@ -1,7 +1,5 @@
-import re
 from docx import Document
 from models.enums import SectionType
-from models.section_data import ResumeSection
 
 class ResumeParser:
     """
@@ -36,29 +34,38 @@ class ResumeParser:
         
         # Iterate through each paragraph in the document
         current_section = None  # A variable to track which section we're currently parsing
-        current_data = {}
+        current_data = {} # A dictionary to hold the parsed data
         
         for section in self.doc.paragraphs:
+            """  
+            It parses the resume sections from the provided .docx file line by line. For example:
+            Sachin Kharel
+            sachink1630@gmail.com • linkedin.com/in/sachinkharel • github.com/sachinkharel • sachinkharel.com.np
+            Education
+            University of Tasmania | Masters of Information Technology and Systems            Hobart, Australia | Feb 2024 - Present
+            GPA: 5.83/7
+            """
+            
             # Clean up the text by stripping unnecessary spaces or special characters
             text = section.text.strip()
-            # print(f"Processing paragraph: {text}")  # Debugging output
             
             # Check if the paragraph text corresponds to a section header
             if text == SectionType.EDUCATION.value:
                 current_section = SectionType.EDUCATION
-                current_data["Education"] = []  # Initialize list for Education
+                # print(f"Found section: {SectionType.EDUCATION}")  # Debugging output
+                current_data[SectionType.EDUCATION.value] = []  # Initialize list for Education
             elif text == SectionType.EXPERIENCE.value:
                 current_section = SectionType.EXPERIENCE
-                current_data["Experience"] = []  # Initialize list for Experience
+                current_data[SectionType.EXPERIENCE.value] = []  # Initialize list for Experience
             elif text == SectionType.SKILLS_AND_INTERESTS.value:
                 current_section = SectionType.SKILLS_AND_INTERESTS
-                current_data["Skills & Interests"] = {"technical": [], "languages": [], "interests": []}  # Initialize nested dict
+                current_data[SectionType.SKILLS_AND_INTERESTS.value] = {"technical": [], "languages": [], "interests": []}  # Initialize nested dict
             elif text == SectionType.LEADERSHIP_AND_ACTIVITIES.value:
                 current_section = SectionType.LEADERSHIP_AND_ACTIVITIES
-                current_data["Leadership & Activities"] = []  # Initialize list for Leadership & Activities
+                current_data[SectionType.LEADERSHIP_AND_ACTIVITIES.value] = []  # Initialize list for Leadership & Activities
             elif text == SectionType.PROJECTS.value:
                 current_section = SectionType.PROJECTS
-                current_data["Projects"] = []  # Initialize list for Projects
+                current_data[SectionType.PROJECTS.value] = []  # Initialize list for Projects
 
                 
             
@@ -70,27 +77,27 @@ class ResumeParser:
                     data = self.parse_education_data(section)
                     # print(f"Parsed education data: {data}")  # Debugging output
                     if data:
-                        current_data["Education"].append(data)
+                        current_data[SectionType.EDUCATION.value].append(data)
                 elif current_section == SectionType.EXPERIENCE:
                     # Process experience data
                     data = self.parse_experience_data(section)
                     if data:
-                        current_data["Experience"].append(data)
+                        current_data[SectionType.EXPERIENCE.value].append(data)
                 elif current_section == SectionType.SKILLS_AND_INTERESTS:
                     # Process skills data
                     data = self.parse_skills_data(section)
                     if data:
-                        current_data["Skills & Interests"].update(data)
+                        current_data[SectionType.SKILLS_AND_INTERESTS.value].update(data)
                 elif current_section == SectionType.LEADERSHIP_AND_ACTIVITIES:
                     # Process leadership data
                     data = self.parse_leadership_data(section)
                     if data:
-                        current_data["Leadership & Activities"].append(data)
+                        current_data[SectionType.LEADERSHIP_AND_ACTIVITIES.value].append(data)
                 elif current_section == SectionType.PROJECTS:
                     # Process project data
                     data = self.parse_projects_data(section)
                     if data:
-                        current_data["Projects"].append(data)
+                        current_data[SectionType.PROJECTS.value].append(data)
         
         return current_data
     
@@ -102,7 +109,7 @@ class ResumeParser:
         for rel in paragraph.part.rels.values():
             if rel.reltype == 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink':
                 if rel.rId in paragraph._p.xml:
-                    print(f"Found hyperlink: {rel.target_ref}")  # Debugging output
+                    # print(f"Found hyperlink: {rel.target_ref}")  # Debugging output
                     return rel.target_ref  # Corrected from .target to .target_ref
         return ""
 
@@ -134,7 +141,7 @@ class ResumeParser:
                 "location": parts[2],     # Location
                 "duration": parts[3],     # Duration
                 "gpa": parts[4] if len(parts) > 4 else "",  # Optional GPA
-                "link": link  # You can handle links separately if required
+                "link": link  
             }
         return None
 

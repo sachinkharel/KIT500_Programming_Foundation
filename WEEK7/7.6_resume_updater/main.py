@@ -1,5 +1,6 @@
 from parser.parser import ResumeParser
 from models.enums import FileType
+import json
 
 
 def main():
@@ -24,11 +25,9 @@ def main():
     
     # Parse the content of the resume
     parsed_sections = parser.parse()
-    print(parsed_sections)
-    
-    # Print to see the parsed output
-    # for section in parsed_sections:
-    #     print(f"{section.section_type.value}: {section.content}")
+    # print(json.dumps(parsed_sections, indent=4, default=lambda o: o.__dict__))
+    print("Parsed sections:", parsed_sections)
+
     
 if __name__ == "__main__":
     # Run the main function when the script is executed
