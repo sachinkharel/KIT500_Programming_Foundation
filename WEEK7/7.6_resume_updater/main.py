@@ -1,6 +1,8 @@
+import json
 from parser.parser import ResumeParser
 from models.enums import FileType
-import json
+from updater.json_creator import save_dict_to_json
+from utils.git_utils import push_json_to_github
 
 
 def main():
@@ -26,10 +28,20 @@ def main():
     # Parse the content of the resume
     parsed_sections = parser.parse()
     # print(json.dumps(parsed_sections, indent=4, default=lambda o: o.__dict__))
-    print("Parsed sections:", parsed_sections)
+    
+    json_file = "resume.json"
+    
+    # Save the parsed sections to a JSON file
+    save_dict_to_json(parsed_sections, json_file)
+    
+   
+    # Push the JSON file to GitHub
+    push_json_to_github(
+        repo_name="sachinkharel/PersonalWebsite",
+        local_json_file=json_file,
+        file_path_in_repo="/resume.json",
+        commit_message="update of resume.json"
+    )
 
-    
 if __name__ == "__main__":
-    # Run the main function when the script is executed
     main()
-    
