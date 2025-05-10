@@ -1,0 +1,164 @@
+{
+    "sections": {
+        "Education": {
+            "section_type": "Education",
+            "entries": [
+                {
+                    "institution": "University of Tasmania",
+                    "degree": "Masters of Information Technology and Systems",
+                    "location": "Hobart, Australia",
+                    "duration": "Feb 2024 - Present",
+                    "gpa": "",
+                    "link": "https://www.utas.edu.au/"
+                },
+                {
+                    "institution": "Vellore Institute of Technology",
+                    "degree": "B.Tech in Computer Science and Engineering",
+                    "location": "Vellore, India",
+                    "duration": "Jul 2018 - Aug 2022",
+                    "gpa": "",
+                    "link": "https://vit.ac.in/"
+                }
+            ]
+        },
+        "Experience": {
+            "section_type": "Experience",
+            "entries": [
+                {
+                    "title": "Front End Team Member",
+                    "company": "Woolworths Supermarket",
+                    "location": "Hobart CBD, Australia",
+                    "duration": "Sep 2024 - Present",
+                    "description": [
+                        "Troubleshooting checkout issues, ensuring seamless transactions while communicating effectively with diverse customers in a fast-paced environment."
+                    ],
+                    "link": "https://www.woolworths.com.au/"
+                },
+                {
+                    "title": "Web Development Project Manager",
+                    "company": "TOORLY",
+                    "location": "Hong Kong, Hong Kong SAR",
+                    "duration": "Oct 2022 - June 2024",
+                    "description": [
+                        "Managing a 5-person remote development team across 4 countries, ensuring smooth cross-functional collaboration with Operations, Product, and Marketing.",
+                        "Optimizing task tracking by introducing Trello, ensuring clear documentation and structured workflows, reducing unnecessary revisions by 66% and improving overall development efficiency by at least 30%.",
+                        "Working directly with the founder to transform high-level project concepts into detailed feature breakdowns, function mapping, and milestone-driven development roadmaps, ensuring seamless execution.",
+                        "Aligning development timelines with business objectives, contributing to the successful private beta launch in Dec 2022 and public beta launch in June 2024.",
+                        "Involving in startup operations and investor-driven decision-making processes."
+                    ],
+                    "link": "http://www.toorly.com"
+                },
+                {
+                    "title": "Project Management Intern",
+                    "company": "TOORLY",
+                    "location": "Hong Kong, Hong Kong SAR",
+                    "duration": "Sep 2022 - Oct 2022",
+                    "description": [
+                        "Collaborating with developers on refactoring and testing efforts, mapping dependencies, and improving task clarity, contributing to an efficient transition to private beta."
+                    ],
+                    "link": "http://www.toorly.com"
+                }
+            ]
+        },
+        "Skills & Interests": {
+            "section_type": "Skills & Interests",
+            "entries": [
+                {
+                    "technical": [
+                        " React.js",
+                        " Bootstrap",
+                        " MySQL",
+                        " Python",
+                        " PHP"
+                    ],
+                    "languages": [
+                        "English & Hindi (Professional Proficiency)",
+                        " Nepali (Native)"
+                    ],
+                    "interests": [
+                        " AR Design",
+                        " Fitness",
+                        " Social Impact & Charity "
+                    ]
+                }
+            ]
+        },
+        "Leadership & Activities": {
+            "section_type": "Leadership & Activities",
+            "entries": [
+                {
+                    "title": "International Student Ambassador Program",
+                    "organization": "Hobart City Council",
+                    "location": "Hobart, Australia",
+                    "duration": "Feb, 2024 - Present",
+                    "description": [
+                        "An ambassador to represent and engage with international students in Hobart, promoting cultural exchange, social inclusion, and volunteering at key City of Hobart events."
+                    ],
+                    "link": "https://www.hobartcity.com.au/Community/Community-programs/Hobart-Welcomes-All/International-Student-Ambassador-Program"
+                },
+                {
+                    "title": "Organising Team Member",
+                    "organization": "Google Developers Group(GDG), Hobart",
+                    "location": "Hobart, Australia",
+                    "duration": "Jun, 2024 - Present",
+                    "description": [
+                        "Organised and hosted the \u201cBuild With AI - Hobart\u201d workshop featuring Google Developer Expert (GDE) on Grounding, Cloud Run, and no-code automation, secured venue support from UTAS and engaged the local developer community through learning and networking.",
+                        "Led the successful panel discussion, \u201cHow to Land a Job in the Tech Industry as a Recent Graduate,\u201d driving a 190% community membership growth and 167% attendance increase, with UTAS venue and food sponsorship, in collaboration with UTAS alumni and the Academic Lead.",
+                        "Started as an attendee, transitioned to a volunteer role, and subsequently joined the organising team."
+                    ],
+                    "link": "https://gdg.community.dev/gdg-hobart/"
+                },
+                {
+                    "title": "Show Organiser",
+                    "organization": "Chepang Charity Show",
+                    "location": "Chitwan, Nepal",
+                    "duration": "April, 2017",
+                    "description": [
+                        "Organized a fundraising event for the underprivileged indigenous ethnic group(Chepang Community) of Nepal."
+                    ],
+                    "link": "https://drive.google.com/drive/folders/10A52lYzNyLf4z3yKjnBkWcawtRnYuH25?usp=sharing"
+                }
+            ]
+        },
+        "Projects": {
+            "section_type": "Projects",
+            "entries": [
+                {
+                    "title": "roomcha",
+                    "duration": "Jan 2025 - Present",
+                    "description": [
+                        "A social media platform designed to simplify finding rental and shared rooms or roommates.",
+                        "Built with React and Python Django, it features secure JWT authentication, Google Maps API for location input, spam protection via reCAPTCHA, and a responsive UI using React Bootstrap.",
+                        "Deployed on Google Cloud Run with continuous integration for seamless updates.",
+                        "Integrated Google Analytics for user insights and behavior optimisation."
+                    ],
+                    "link": "http://roomcha.com/"
+                },
+                {
+                    "title": "Personal Website(sachinkharel.com.np)",
+                    "duration": "Nov 2024",
+                    "description": [
+                        "Built with HTML & Tailwind CSS, hosted on GitHub Pages with a custom domain."
+                    ],
+                    "link": "http://sachinkharel.com.np"
+                },
+                {
+                    "title": "Digital Tassie Charity",
+                    "duration": "May 2024",
+                    "description": [
+                        "Developed as part of the unit KIT502 - Web Development, utilising PHP, SQL, HTML, and Bootstrap to create a responsive and user-friendly web application."
+                    ],
+                    "link": "https://github.com/sachinkharel/Digital-Tassie-Charity"
+                },
+                {
+                    "title": "Indisches Restaurant Ganesha",
+                    "duration": "June 2022",
+                    "description": [
+                        "Frontend website developed with React and its styled components for initiating digital footprint of the restaurant. Hosted on Netlify, domain from GoDaddy."
+                    ],
+                    "link": "https://restaurantganeshaburghausen.de/"
+                }
+            ]
+        }
+    }
+}

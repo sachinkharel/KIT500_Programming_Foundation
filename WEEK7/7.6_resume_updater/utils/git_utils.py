@@ -19,7 +19,7 @@ def push_json_to_github(repo_name, local_json_file, file_path_in_repo, commit_me
     # Load environment variables from .env
     load_dotenv()
     GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-    print(f"GitHub Token: {GITHUB_TOKEN}")
+    # print(f"GitHub Token: {GITHUB_TOKEN}")
     # Authenticate with GitHub using the token from the .env file
     github = Github(GITHUB_TOKEN)
     repo = github.get_repo(repo_name)
@@ -47,7 +47,7 @@ def push_json_to_github(repo_name, local_json_file, file_path_in_repo, commit_me
             content=json.dumps(json_data, indent=2),  # Format the JSON nicely
             sha=content_file.sha
         )
-        print(f"✅ Updated file: {file_path_in_repo}")
+        print(f"Updated file: {file_path_in_repo}")
     except Exception as e:
         # If the file doesn't exist (404 error), create a new file
         if "404" in str(e):
@@ -56,7 +56,7 @@ def push_json_to_github(repo_name, local_json_file, file_path_in_repo, commit_me
                 message=commit_message,
                 content=json.dumps(json_data, indent=2)
             )
-            print(f"✅ Created new file: {file_path_in_repo}")
+            print(f"Created new file: {file_path_in_repo}")
         else:
             # If some other error occurred, raise it
-            print(f"❌ Error: {e}")
+            print(f"Error: {e}")
