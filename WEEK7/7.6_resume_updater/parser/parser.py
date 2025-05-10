@@ -1,5 +1,6 @@
 from docx import Document
 from models.enums import SectionType
+from models.section_data import ResumeDocument, ResumeSection
 
 class ResumeParser:
     """
@@ -20,8 +21,15 @@ class ResumeParser:
         
         self.doc = Document(file_path)  # open the docx file using the docx library
         
-        # Initialize a dictionary where each SectionType enum member maps to an empty list for storing resume content
-        self.sections = {section: [] for section in SectionType}
+        # # Initialize a dictionary where each SectionType enum member maps to an empty list for storing resume content
+        # self.sections = {section: [] for section in SectionType}
+        
+        # Initialize a ResumeDocument to store all parsed data
+        self.resume_document = ResumeDocument(file_path=file_path)
+        
+        # Initialize a ResumeSection for each section type in the enum
+        for section_type in SectionType:
+            self.resume_document.add_section(ResumeSection(section_type=section_type.value))
         
     def parse(self) -> dict:
         """
@@ -34,7 +42,7 @@ class ResumeParser:
         
         # Iterate through each paragraph in the document
         current_section = None  # A variable to track which section we're currently parsing
-        current_data = {} # A dictionary to hold the parsed data
+        # current_data = {} # A dictionary to hold the parsed data
         
         for section in self.doc.paragraphs:
             """  
@@ -52,20 +60,19 @@ class ResumeParser:
             # Check if the paragraph text corresponds to a section header
             if text == SectionType.EDUCATION.value:
                 current_section = SectionType.EDUCATION
-                # print(f"Found section: {SectionType.EDUCATION}")  # Debugging output
-                current_data[SectionType.EDUCATION.value] = []  # Initialize list for Education
+                # current_data[SectionType.EDUCATION.value] = []  # Initialize list for Education
             elif text == SectionType.EXPERIENCE.value:
                 current_section = SectionType.EXPERIENCE
-                current_data[SectionType.EXPERIENCE.value] = []  # Initialize list for Experience
+                # current_data[SectionType.EXPERIENCE.value] = []  # Initialize list for Experience
             elif text == SectionType.SKILLS_AND_INTERESTS.value:
                 current_section = SectionType.SKILLS_AND_INTERESTS
-                current_data[SectionType.SKILLS_AND_INTERESTS.value] = {"technical": [], "languages": [], "interests": []}  # Initialize nested dict
+               
             elif text == SectionType.LEADERSHIP_AND_ACTIVITIES.value:
                 current_section = SectionType.LEADERSHIP_AND_ACTIVITIES
-                current_data[SectionType.LEADERSHIP_AND_ACTIVITIES.value] = []  # Initialize list for Leadership & Activities
+                # current_data[SectionType.LEADERSHIP_AND_ACTIVITIES.value] = []  # Initialize list for Leadership & Activities
             elif text == SectionType.PROJECTS.value:
                 current_section = SectionType.PROJECTS
-                current_data[SectionType.PROJECTS.value] = []  # Initialize list for Projects
+                # current_data[SectionType.PROJECTS.value] = []  # Initialize list for Projects
 
                 
             
@@ -77,29 +84,36 @@ class ResumeParser:
                     data = self.parse_education_data(section)
                     # print(f"Parsed education data: {data}")  # Debugging output
                     if data:
-                        current_data[SectionType.EDUCATION.value].append(data)
+                        self.resume_document.get_section(SectionType.EDUCATION.value).add_entry(data)
                 elif current_section == SectionType.EXPERIENCE:
                     # Process experience data
                     data = self.parse_experience_data(section)
                     if data:
-                        current_data[SectionType.EXPERIENCE.value].append(data)
+                       self.resume_document.get_section(SectionType.EXPERIENCE.value).add_entry(data)
                 elif current_section == SectionType.SKILLS_AND_INTERESTS:
                     # Process skills data
                     data = self.parse_skills_data(section)
                     if data:
-                        current_data[SectionType.SKILLS_AND_INTERESTS.value].update(data)
+                        # skills_section = self.resume_document.get_section(SectionType.SKILLS_AND_INTERESTS.value)
+                        # if "technical" in data:
+                        #     skills_section.entries["technical"] = data["technical"]
+                        # if "languages" in data:
+                        #     skills_section.entries["languages"] = data["languages"]
+                        # if "interests" in data:
+                        #     skills_section.entries["interests"] = data["interests"]
+                        self.resume_document.get_section(SectionType.SKILLS_AND_INTERESTS.value).add_entry(data)
                 elif current_section == SectionType.LEADERSHIP_AND_ACTIVITIES:
                     # Process leadership data
                     data = self.parse_leadership_data(section)
                     if data:
-                        current_data[SectionType.LEADERSHIP_AND_ACTIVITIES.value].append(data)
+                        self.resume_document.get_section(SectionType.LEADERSHIP_AND_ACTIVITIES.value).add_entry(data)
                 elif current_section == SectionType.PROJECTS:
                     # Process project data
                     data = self.parse_projects_data(section)
                     if data:
-                        current_data[SectionType.PROJECTS.value].append(data)
+                         self.resume_document.get_section(SectionType.PROJECTS.value).add_entry(data)
         
-        return current_data
+        return self.resume_document.to_dict()  # Return the structured data as a dictionary
     
     def extract_hyperlink(self, paragraph):
         """
