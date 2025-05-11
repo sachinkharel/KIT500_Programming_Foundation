@@ -1,8 +1,7 @@
-from calendar import c
-from parser.parser import ResumeParser
-from models.enums import FileType
-from updater.json_creator import save_dict_to_json
-from utils.git_utils import push_json_to_github
+from parser import ResumeParser
+from enums import FileType
+from json_creator import save_dict_to_json
+from git_utils import push_json_to_github
 
 
 def main():
@@ -40,12 +39,12 @@ def main():
     
    
     # Push the JSON file to GitHub
-    # push_json_to_github(
-    #     repo_name="sachinkharel/PersonalWebsite",
-    #     local_json_file=json_file,
-    #     file_path_in_repo="/resume.json",
-    #     commit_message="update of resume.json"
-    # )
+    push_json_to_github(
+        repo_name="sachinkharel/PersonalWebsite",
+        local_json_file=json_file,
+        file_path_in_repo="/resume.json",
+        commit_message="update of resume.json"
+    )
 
 if __name__ == "__main__":
     main()

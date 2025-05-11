@@ -1,6 +1,6 @@
 from docx import Document
-from models.enums import SectionType
-from models.section_data import ResumeDocument, ResumeSection
+from enums import SectionType
+from section_data import ResumeDocument, ResumeSection
 
 class ResumeParser:
     """
