@@ -13,7 +13,7 @@ def main():
     
     # Prompt the user for the path to the resume file
     
-    resume_file = "/Users/sachinutas/Downloads/Sachin Kharel Resume.docx"
+    resume_file = "/Users/sachinutas/Desktop/Sachin Kharel Resume.docx"
     
     #OR
     
@@ -44,7 +44,7 @@ def main():
         print(f"Error parsing the resume: {e}")
         return
     
-    json_file = "resume1.json"
+    json_file = "resume.json"
     
     # Save the parsed sections to a JSON file
     
