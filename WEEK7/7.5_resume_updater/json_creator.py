@@ -16,7 +16,6 @@ def save_dict_to_json(data_dict, output_file):
         
         with open(output_file, 'w') as json_file:
             json.dump(data_dict, json_file, indent=4)
-        print(f"Data has been successfully written to {output_file}")
         
     except (TypeError, IOError) as e:
         
